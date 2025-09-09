@@ -10,7 +10,6 @@
 
 <body>
     <h1>List of Products</h1>
-    <a href="{{ route('products.create') }}">Create New Product</a>
 </body>
 
 </html>
