@@ -1,16 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.app')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Ecommerce</title>
-</head>
-
-<body>
+@section('content')
     <h1>Create New Product</h1>
-    <form action="{{ route('products.store') }}" method="POST">
+    <form action="/products" method="POST">
         @csrf
         <label for="name">Product Name:</label>
         <input type="text" id="name" name="name" required>
@@ -20,10 +12,4 @@
         <br>
         <button type="submit">Create Product</button>
     </form>
-</body>
-
-</html>
-
-</body>
-
-</html>
+@endsection
