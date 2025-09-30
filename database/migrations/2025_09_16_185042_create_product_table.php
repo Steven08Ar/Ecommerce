@@ -17,8 +17,10 @@ return new class extends Migration
             $table->text('description');
             $table->decimal('price');
             $table->string('url_image');
-            $table->string('category');
+
             $table->timestamps();
+
+            $table->foreignId('category_id')->references('id')->on('categories');
         });
     }
 
