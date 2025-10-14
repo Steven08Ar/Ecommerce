@@ -1,159 +1,90 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Productos Tecnológicos</title>
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background: #fff;
-            color: #111827;
-            line-height: 1.6;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        /* Navbar */
-        nav {
-            background: #fff;
-            border-bottom: 1px solid #e5e7eb;
-            padding: 20px;
-            text-align: center;
-            font-weight: bold;
-            font-size: 1.2rem;
-        }
+    <title>{{ config('app.name', 'Laravel') }}</title>
 
-        /* Header */
-        header {
-            text-align: center;
-            padding: 50px 20px 30px;
-        }
+    <!-- Fonts -->
+    <link rel="dns-prefetch" href="//fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
 
-        header h1 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
-
-        header p {
-            font-size: 1rem;
-            color: #6b7280;
-        }
-
-        /* Productos */
-        .container {
-            max-width: 1200px;
-            margin: auto;
-            padding: 40px 20px;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-            justify-items: center;
-        }
-
-        .card {
-            background: #f9fafb;
-            border-radius: 20px;
-            padding: 20px;
-            text-align: center;
-            width: 100%;
-            max-width: 320px;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-        }
-
-        .card img {
-            width: 100%;
-            max-width: 250px;
-            height: auto;
-            border-radius: 15px;
-            margin-bottom: 15px;
-        }
-
-        .badges {
-            margin-bottom: 10px;
-        }
-
-        .badge {
-            display: inline-block;
-            padding: 6px 12px;
-            border-radius: 20px;
-            background: #f3f4f6;
-            color: #374151;
-            font-size: 0.8rem;
-            margin: 0 5px 5px 0;
-        }
-
-        .nombre {
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin: 10px 0;
-        }
-
-        .descripcion {
-            font-size: 0.9rem;
-            color: #4b5563;
-            margin-bottom: 15px;
-        }
-
-        .price {
-            font-size: 1.4rem;
-            font-weight: bold;
-            color: #2563eb;
-            margin-bottom: 15px;
-        }
-
-        .btn {
-            display: inline-block;
-            background: #2563eb;
-            color: #fff;
-            padding: 10px 20px;
-            border-radius: 10px;
-            font-size: 0.95rem;
-            text-decoration: none;
-            transition: background 0.2s ease;
-        }
-
-        .btn:hover {
-            background: #1d4ed8;
-        }
-
-        /* Footer */
-        footer {
-            margin-top: auto;
-            background: #fff;
-            border-top: 1px solid #e5e7eb;
-            padding: 20px;
-            text-align: center;
-            font-size: 0.9rem;
-            color: #6b7280;
-        }
-    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 </head>
 
 <body>
+    <div id="app">
+        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+            <div class="container">
+                <a class="navbar-brand" href="{{ url('/') }}">
+                    {{ config('app.name', 'Laravel') }}
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
 
-    <body>
-        @include('layouts.navbar')
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <!-- Left Side Of Navbar -->
+                    <ul class="navbar-nav me-auto">
 
-        @yield('content')
+                    </ul>
 
-        @include('layouts.footer')
-    </body>
+                    <!-- Right Side Of Navbar -->
+                    <ul class="navbar-nav ms-auto">
+                        <!-- Authentication Links -->
+                        @guest
+                            @if (Route::has('login'))
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                </li>
+                            @endif
+
+                            @if (Route::has('register'))
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                </li>
+                            @endif
+                        @else
+                            <li class="nav-item dropdown">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    {{ Auth::user()->name }}
+                                </a>
+
+                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                                        onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                        {{ __('Logout') }}
+                                    </a>
+
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                        @csrf
+                                    </form>
+                                </div>
+                            </li>
+                        @endguest
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <main class="py-4">
+            @yield('content')
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous">
+    </script>
 
 </body>
 
