@@ -1,73 +1,256 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
-@section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Login') }}</div>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Iniciar Sesión - {{ config('app.name', 'Laravel') }}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-                <div class="card-body">
-                    <form method="POST" action="{{ route('login') }}">
-                        @csrf
+    <style>
+        /* --- Estilos Base --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-                        <div class="row mb-3">
-                            <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Email Address') }}</label>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0f4f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #333;
+        }
 
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+        .login-container {
+            display: flex;
+            width: 900px;
+            max-width: 90%;
+            min-height: 550px;
+            background-color: #fff;
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
 
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
+        .login-branding {
+            width: 45%;
+            padding: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: #fff;
+        }
 
-                        <div class="row mb-3">
-                            <label for="password" class="col-md-4 col-form-label text-md-end">{{ __('Password') }}</label>
+        /* --- Estilo para tu logo SVG --- */
+        .branding-svg {
+            width: 80%;
+            /* Usa el 80% del contenedor */
+            max-width: 350px;
+            /* Pero no más de 350px de ancho */
+            height: auto;
+            /* Mantiene la proporción correcta */
+        }
 
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+        /* --- Estilos del Formulario --- */
+        .login-form-wrapper {
+            width: 55%;
+            padding: 50px 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
 
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
+        .form-header {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #e0e0e0;
+        }
 
-                        <div class="row mb-3">
-                            <div class="col-md-6 offset-md-4">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+        .form-header a {
+            text-decoration: none;
+            color: #888;
+            padding-bottom: 10px;
+            font-weight: 600;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
 
-                                    <label class="form-check-label" for="remember">
-                                        {{ __('Remember Me') }}
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
+        .form-header a.active {
+            color: #007bff;
+            border-bottom-color: #007bff;
+        }
 
-                        <div class="row mb-0">
-                            <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Login') }}
-                                </button>
+        h2 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            color: #333;
+        }
 
-                                @if (Route::has('password.request'))
-                                    <a class="btn btn-link" href="{{ route('password.request') }}">
-                                        {{ __('Forgot Your Password?') }}
-                                    </a>
-                                @endif
-                            </div>
-                        </div>
-                    </form>
-                </div>
+        .form-subtitle {
+            margin-bottom: 30px;
+            color: #666;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #555;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+            transition: border-color 0.3s ease;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+            font-size: 0.85rem;
+        }
+
+        .form-options .form-check-label {
+            color: #555;
+        }
+
+        .form-options a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 25px;
+            transition: background-color 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-container">
+        <div class="login-branding">
+
+            <div class="branding-svg">
+                <svg width="195" height="213" viewBox="0 0 150 171" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M116.845 149.024H68.0429V98.5444L116.845 101.377V149.024ZM27.9634 149.024H24.1432C22.1358 149.03 20.1472 148.637 18.2926 147.868C16.4379 147.1 14.7541 145.971 13.3386 144.547C11.9152 143.131 10.7867 141.447 10.0184 139.592C9.25012 137.737 8.85728 135.748 8.8627 133.74V15.2846C8.85728 13.2766 9.25012 11.2875 10.0184 9.4324C10.7867 7.5773 11.9152 5.89305 13.3386 4.47714C14.7542 3.0534 16.438 1.92463 18.2926 1.15614C20.1472 0.387651 22.1358 -0.00529647 24.1432 5.39112e-05H126.014C128.021 -0.00529647 130.01 0.387651 131.864 1.15614C133.719 1.92463 135.403 3.0534 136.818 4.47714C138.242 5.89305 139.37 7.5773 140.138 9.4324C140.907 11.2875 141.299 13.2766 141.294 15.2846V133.74C141.3 135.747 140.907 137.736 140.139 139.592C139.371 141.447 138.243 143.131 136.819 144.547C135.404 145.971 133.72 147.1 131.865 147.869C130.01 148.637 128.021 149.03 126.014 149.024H121.939V96.5689L110.416 95.9002V59.1524L120.603 60.3535V60.3459L120.662 60.3866L123.527 56.1732L74.9243 23.1064L26.7906 55.7732L29.6505 59.9892L29.7449 59.9255L39.5359 58.2914V95.5576L27.9634 96.5027V149.024ZM62.9507 149.024H33.0569V101.198L62.9507 98.7571V149.024ZM105.321 95.6047L68.0456 93.4394V93.2267L67.7768 93.2483V54.2601L105.324 58.7079V95.6034L105.321 95.6047ZM86.5388 61.1381C80.219 61.1381 75.0784 67.4226 75.0784 75.1489C75.0784 82.8752 80.219 89.1597 86.5388 89.1597C92.8586 89.1597 97.9992 82.8752 97.9992 75.1489C97.9992 67.4226 92.8586 61.1381 86.5388 61.1381ZM44.6294 95.1461V57.7271L62.6808 54.5798V93.6725L44.6294 95.1461ZM54.0664 62.4118C50.2042 62.4118 47.0628 68.411 47.0628 75.7858C47.0628 83.1605 50.2042 89.1597 54.0664 89.1597C57.9286 89.1597 61.07 83.1605 61.07 75.7858C61.07 68.411 57.9273 62.4118 54.0664 62.4118ZM92.3786 83.2217L80.559 82.823V67.7041L92.3798 68.3282V83.2204L92.3786 83.2217ZM57.2015 82.9364H49.9966V68.9778L57.2015 68.5562V82.9364ZM111.495 54.1505L69.1394 49.1589L76.1926 30.1271L111.496 54.148L111.495 54.1505ZM39.8466 53.073L69.7887 32.7535L63.7364 49.0863L39.8478 53.0743L39.8466 53.073Z"
+                        fill="white" />
+                    <path
+                        d="M16.3152 156.912V170.841H12.9349V162.488L9.83128 170.841H7.10329L3.97994 162.468V170.841H0.599609V156.912H4.59275L8.48705 166.555L12.3418 156.912H16.3152Z"
+                        fill="white" />
+                    <path
+                        d="M20.4461 158.618C19.8531 158.618 19.3654 158.447 18.9833 158.103C18.6143 157.745 18.4298 157.309 18.4298 156.793C18.4298 156.264 18.6143 155.827 18.9833 155.483C19.3654 155.126 19.8531 154.948 20.4461 154.948C21.026 154.948 21.5004 155.126 21.8694 155.483C22.2516 155.827 22.4427 156.264 22.4427 156.793C22.4427 157.309 22.2516 157.745 21.8694 158.103C21.5004 158.447 21.026 158.618 20.4461 158.618ZM22.1264 159.769V170.841H18.746V159.769H22.1264Z"
+                        fill="white" />
+                    <path d="M38.7481 156.912V159.63H35.0712V170.841H31.6909V159.63H28.014V156.912H38.7481Z"
+                        fill="white" />
+                    <path
+                        d="M42.1446 158.618C41.5516 158.618 41.0639 158.447 40.6818 158.103C40.3128 157.745 40.1283 157.309 40.1283 156.793C40.1283 156.264 40.3128 155.827 40.6818 155.483C41.0639 155.126 41.5516 154.948 42.1446 154.948C42.7245 154.948 43.1989 155.126 43.5679 155.483C43.9501 155.827 44.1412 156.264 44.1412 156.793C44.1412 157.309 43.9501 157.745 43.5679 158.103C43.1989 158.447 42.7245 158.618 42.1446 158.618ZM43.8249 159.769V170.841H40.4445V159.769H43.8249Z"
+                        fill="white" />
+                    <path
+                        d="M56.6726 165.127C56.6726 165.444 56.6528 165.775 56.6133 166.119H48.963C49.0157 166.807 49.2332 167.336 49.6154 167.706C50.0107 168.063 50.4918 168.242 51.0584 168.242C51.9019 168.242 52.4883 167.885 52.8178 167.17H56.4156C56.2311 167.898 55.895 168.553 55.4074 169.135C54.933 169.717 54.3333 170.173 53.6085 170.504C52.8837 170.835 52.0732 171 51.177 171C50.0964 171 49.1343 170.769 48.2909 170.306C47.4475 169.843 46.7885 169.181 46.3141 168.321C45.8397 167.461 45.6025 166.456 45.6025 165.305C45.6025 164.154 45.8331 163.149 46.2943 162.289C46.7688 161.429 47.4277 160.768 48.2711 160.305C49.1146 159.842 50.0832 159.611 51.177 159.611C52.2445 159.611 53.1934 159.835 54.0236 160.285C54.8539 160.735 55.4997 161.377 55.9609 162.21C56.4353 163.043 56.6726 164.016 56.6726 165.127ZM53.2132 164.234C53.2132 163.652 53.0155 163.189 52.6201 162.845C52.2248 162.501 51.7306 162.329 51.1375 162.329C50.5708 162.329 50.0898 162.494 49.6944 162.825C49.3123 163.156 49.075 163.625 48.9828 164.234H53.2132Z"
+                        fill="white" />
+                    <path
+                        d="M65.177 159.65C66.4685 159.65 67.4964 160.074 68.2608 160.92C69.0383 161.754 69.4271 162.904 69.4271 164.373V170.841H66.0665V164.829C66.0665 164.088 65.8755 163.513 65.4933 163.103C65.1111 162.693 64.5971 162.488 63.9514 162.488C63.3056 162.488 62.7916 162.693 62.4095 163.103C62.0273 163.513 61.8362 164.088 61.8362 164.829V170.841H58.4559V159.769H61.8362V161.238C62.1788 160.748 62.6401 160.365 63.2199 160.087C63.7998 159.796 64.4522 159.65 65.177 159.65Z"
+                        fill="white" />
+                    <path
+                        d="M71.104 165.285C71.104 164.148 71.3149 163.149 71.7366 162.289C72.1715 161.429 72.7579 160.768 73.4959 160.305C74.2339 159.842 75.0576 159.611 75.9669 159.611C76.6918 159.611 77.3507 159.763 77.9437 160.067C78.55 160.371 79.0244 160.781 79.367 161.297V156.158H82.7474V170.841H79.367V169.254C79.0507 169.783 78.5961 170.206 78.003 170.524C77.4232 170.841 76.7445 171 75.9669 171C75.0576 171 74.2339 170.769 73.4959 170.306C72.7579 169.829 72.1715 169.161 71.7366 168.301C71.3149 167.428 71.104 166.423 71.104 165.285ZM79.367 165.305C79.367 164.459 79.1298 163.791 78.6554 163.301C78.1941 162.812 77.6274 162.567 76.9553 162.567C76.2832 162.567 75.7099 162.812 75.2355 163.301C74.7743 163.777 74.5436 164.439 74.5436 165.285C74.5436 166.132 74.7743 166.807 75.2355 167.309C75.7099 167.799 76.2832 168.044 76.9553 168.044C77.6274 168.044 78.1941 167.799 78.6554 167.309C79.1298 166.82 79.367 166.152 79.367 165.305Z"
+                        fill="white" />
+                    <path
+                        d="M84.5208 165.285C84.5208 164.148 84.7316 163.149 85.1534 162.289C85.5883 161.429 86.1747 160.768 86.9127 160.305C87.6507 159.842 88.4744 159.611 89.3837 159.611C90.1613 159.611 90.84 159.769 91.4198 160.087C92.0129 160.404 92.4675 160.821 92.7838 161.337V159.769H96.1641V170.841H92.7838V169.274C92.4543 169.79 91.9931 170.206 91.4 170.524C90.8202 170.841 90.1415 171 89.3639 171C88.4678 171 87.6507 170.769 86.9127 170.306C86.1747 169.829 85.5883 169.161 85.1534 168.301C84.7316 167.428 84.5208 166.423 84.5208 165.285ZM92.7838 165.305C92.7838 164.459 92.5466 163.791 92.0722 163.301C91.6109 162.812 91.0442 162.567 90.3721 162.567C89.7 162.567 89.1267 162.812 88.6523 163.301C88.191 163.777 87.9604 164.439 87.9604 165.285C87.9604 166.132 88.191 166.807 88.6523 167.309C89.1267 167.799 89.7 168.044 90.3721 168.044C91.0442 168.044 91.6109 167.799 92.0722 167.309C92.5466 166.82 92.7838 166.152 92.7838 165.305Z"
+                        fill="white" />
+                    <path d="M112.782 156.912V159.63H109.105V170.841H105.724V159.63H102.048V156.912H112.782Z"
+                        fill="white" />
+                    <path
+                        d="M124.876 165.127C124.876 165.444 124.856 165.775 124.817 166.119H117.167C117.219 166.807 117.437 167.336 117.819 167.706C118.214 168.063 118.695 168.242 119.262 168.242C120.105 168.242 120.692 167.885 121.021 167.17H124.619C124.435 167.898 124.099 168.553 123.611 169.135C123.137 169.717 122.537 170.173 121.812 170.504C121.087 170.835 120.277 171 119.381 171C118.3 171 117.338 170.769 116.494 170.306C115.651 169.843 114.992 169.181 114.518 168.321C114.043 167.461 113.806 166.456 113.806 165.305C113.806 164.154 114.037 163.149 114.498 162.289C114.972 161.429 115.631 160.768 116.475 160.305C117.318 159.842 118.287 159.611 119.381 159.611C120.448 159.611 121.397 159.835 122.227 160.285C123.057 160.735 123.703 161.377 124.164 162.21C124.639 163.043 124.876 164.016 124.876 165.127ZM121.417 164.234C121.417 163.652 121.219 163.189 120.824 162.845C120.428 162.501 119.934 162.329 119.341 162.329C118.774 162.329 118.293 162.494 117.898 162.825C117.516 163.156 117.279 163.625 117.186 164.234H121.417Z"
+                        fill="white" />
+                    <path
+                        d="M125.987 165.305C125.987 164.154 126.218 163.149 126.679 162.289C127.154 161.429 127.806 160.768 128.636 160.305C129.48 159.842 130.442 159.611 131.522 159.611C132.906 159.611 134.059 159.974 134.982 160.702C135.917 161.429 136.53 162.455 136.82 163.777H133.222C132.919 162.931 132.333 162.508 131.463 162.508C130.844 162.508 130.349 162.752 129.98 163.242C129.611 163.718 129.427 164.406 129.427 165.305C129.427 166.205 129.611 166.899 129.98 167.389C130.349 167.865 130.844 168.103 131.463 168.103C132.333 168.103 132.919 167.68 133.222 166.833H136.82C136.53 168.129 135.917 169.148 134.982 169.889C134.046 170.63 132.893 171 131.522 171C130.442 171 129.48 170.769 128.636 170.306C127.806 169.843 127.154 169.181 126.679 168.321C126.218 167.461 125.987 166.456 125.987 165.305Z"
+                        fill="white" />
+                    <path
+                        d="M145.409 159.65C146.674 159.65 147.689 160.074 148.453 160.92C149.217 161.754 149.6 162.904 149.6 164.373V170.841H146.239V164.829C146.239 164.088 146.048 163.513 145.666 163.103C145.284 162.693 144.77 162.488 144.124 162.488C143.478 162.488 142.964 162.693 142.582 163.103C142.2 163.513 142.009 164.088 142.009 164.829V170.841H138.628V156.158H142.009V161.257C142.351 160.768 142.819 160.378 143.412 160.087C144.005 159.796 144.671 159.65 145.409 159.65Z"
+                        fill="white" />
+                </svg>
             </div>
+
+        </div>
+
+        <div class="login-form-wrapper">
+            <div class="form-header">
+                <a href="{{ route('login') }}" class="active">Iniciar Sesión</a>
+                <a href="{{ route('register') }}">Crear Cuenta</a>
+            </div>
+
+            <h2>Bienvenido de nuevo</h2>
+            <p class="form-subtitle">Ingresa tus credenciales para acceder.</p>
+
+            <form method="POST" action="{{ route('login') }}">
+                @csrf
+                <div class="input-group">
+                    <label for="email">Correo Electrónico</label>
+                    <input id="email" type="email" class="@error('email') is-invalid @enderror" name="email"
+                        value="{{ old('email') }}" required autocomplete="email" autofocus>
+                    @error('email')
+                        <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                    @enderror
+                </div>
+                <div class="input-group">
+                    <label for="password">Contraseña</label>
+                    <input id="password" type="password" class="@error('password') is-invalid @enderror"
+                        name="password" required autocomplete="current-password">
+                    @error('password')
+                        <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                    @enderror
+                </div>
+                <div class="form-options">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="remember" id="remember"
+                            {{ old('remember') ? 'checked' : '' }}>
+                        <label class="form-check-label" for="remember">Mantener sesión activa</label>
+                    </div>
+                    @if (Route::has('password.request'))
+                        <a href="{{ route('password.request') }}">¿Olvidó su Contraseña?</a>
+                    @endif
+                </div>
+                <button type="submit" class="submit-btn">Iniciar Sesión</button>
+            </form>
         </div>
     </div>
-</div>
-@endsection
+</body>
+
+</html>
