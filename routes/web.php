@@ -23,4 +23,5 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::prefix('admin')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin.index');
     Route::get('/categorias', [CategoryController::class, 'create'])->name('admin.categories.create');
+    Route::post('/categorias/store', [CategoryController::class, 'store'])->name('admin.categories.store');
 });
