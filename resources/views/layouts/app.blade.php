@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.name', 'Laravel') }}</title>
+    <link rel="stylesheet" href="{{ asset('../public/css/app.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
@@ -122,6 +123,54 @@
             color: #ef4444;
             /* Rojo más intenso al pasar el mouse */
         }
+
+        /* --- Contenedor de botones de autenticación --- */
+        .auth-buttons {
+            display: flex;
+            gap: 15px;
+            background-color: #ffffff00;
+            /* gris oscuro del navbar */
+            padding: 8px 16px;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        /* --- Estilo base de los botones --- */
+        .btn-auth {
+            padding: 8px 18px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        /* --- Botón de Login --- */
+        .login-btn {
+            background-color: #2563eb;
+            /* azul intenso */
+            color: #fff;
+            border: 1px solid #2563eb;
+        }
+
+        .login-btn:hover {
+            background-color: #1e40af;
+            /* azul más oscuro */
+            transform: translateY(-2px);
+        }
+
+        /* --- Botón de Register --- */
+        .register-btn {
+            background-color: transparent;
+            color: #ffffff;
+            border: 1px solid #4b5563;
+        }
+
+        .register-btn:hover {
+            background-color: #374151;
+            color: #fff;
+            transform: translateY(-2px);
+        }
     </style>
 </head>
 
@@ -131,12 +180,13 @@
             <a href="{{ url('/home') }}" class="logo">Mi Tienda Tech</a>
 
             <div class="nav-links">
-                <a href="#">Productos</a>
-                <a href="#">Ofertas</a>
-
+                <a href="{{ route('products.index') }}">Productos</a>
+                <a href="{{ route('admin.index') }}">Admin</a>
                 @guest
-                    <a href="{{ route('login') }}">Login</a>
-                    <a href="{{ route('register') }}">Register</a>
+                    <div class="auth-buttons">
+                        <a href="{{ route('login') }}" class="btn-auth login-btn">Login</a>
+                        <a href="{{ route('register') }}" class="btn-auth register-btn">Register</a>
+                    </div>
                 @else
                     <div class="user-info">
                         <span>{{ Auth::user()->name }}</span>

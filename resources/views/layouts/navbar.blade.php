@@ -91,6 +91,7 @@
             <a href="{{ url('/') }}" class="logo">Mi Tienda Tech</a>
 
             <div class="nav-links">
+                <a href="{{ route('products.index') }}">Admin</a>
                 <a href="{{ route('products.index') }}">Productos</a>
                 <a href="{{ route('products.create') }}">Agregar Producto</a>
 
@@ -119,6 +120,7 @@
                         </form>
                     </div>
                 @endguest
+
             </div>
         </nav>
         <main class="py-4" style="padding: 20px 40px;">
