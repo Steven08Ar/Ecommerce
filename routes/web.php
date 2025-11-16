@@ -7,8 +7,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
 
-Route::get('/', [ProductController::class, 'index']);
-Route::get('products', [ProductController::class, 'index'])->name('products.index');
+Route::get('/', [ProductController::class, 'index'])->name('products.index');
 Route::get('products/{id}/{category?}', [ProductController::class, 'detail'])->name('products.detail');
 
 Auth::routes();

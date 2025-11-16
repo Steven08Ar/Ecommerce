@@ -1,190 +1,167 @@
 @extends('layouts.app')
 
 @section('content')
-    <!DOCTYPE html>
-    <html lang="es">
+    <style>
+        :root {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: #f5f5f5;
+            color: #111827;
+        }
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Listado de Productos</title>
-        <style>
-            * {
-                margin: 0;
-                padding: 0;
-                box-sizing: border-box;
-            }
+        .page-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 120px 20px 80px;
+        }
 
-            body {
-                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-                background: #fff;
-                color: #111827;
-                line-height: 1.6;
-            }
+        header.hero {
+            background: linear-gradient(135deg, #0b1e4a, #1f4068);
+            border-radius: 24px;
+            color: #fff;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 15px 40px rgba(15, 23, 42, 0.25);
+            position: relative;
+            z-index: 1;
+        }
 
-            header {
-                text-align: center;
-                padding: 40px 20px;
-            }
+        header.hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 12px;
+        }
 
-            header h1 {
-                font-size: 2.5rem;
-                font-weight: 700;
-                margin-bottom: 10px;
-            }
+        header.hero p {
+            max-width: 640px;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.8);
+        }
 
-            header p {
-                font-size: 1rem;
-                color: #6b7280;
-            }
+        .contenedor {
+            margin-top: 40px;
+        }
 
-            .container {
-                max-width: 1200px;
-                margin: auto;
-                padding: 20px;
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-                gap: 30px;
-            }
+        .grid-productos {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
 
-            .card {
-                background: #f9fafb;
-                border-radius: 20px;
-                padding: 20px;
-                text-align: center;
-                transition: transform 0.2s ease, box-shadow 0.2s ease;
-            }
+        .tarjeta {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 6px 24px rgba(15, 23, 42, 0.08);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
 
-            .card:hover {
-                transform: translateY(-5px);
-                box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-            }
+        .tarjeta:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(15, 23, 42, 0.18);
+        }
 
-            .card img {
-                width: 100%;
-                max-width: 250px;
-                height: auto;
-                border-radius: 15px;
-                margin-bottom: 15px;
-            }
+        .tarjeta img {
+            width: 100%;
+            height: auto;
+            border-radius: 16px;
+            margin-bottom: 15px;
+        }
 
-            .badges {
-                margin-bottom: 10px;
-            }
+        .contenido h2 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
 
-            .badge {
-                display: inline-block;
-                padding: 6px 12px;
-                border-radius: 20px;
-                background: #f3f4f6;
-                color: #374151;
-                font-size: 0.8rem;
-                margin: 0 5px 5px 0;
-            }
+        .contenido p {
+            font-size: 0.95rem;
+            color: #4b5563;
+            margin-bottom: 8px;
+        }
 
-            .nombre {
-                font-size: 1.2rem;
-                font-weight: 600;
-                margin: 10px 0;
-            }
+        .precio {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #2563eb;
+            margin-bottom: 10px;
+        }
 
-            .descripcion {
-                font-size: 0.9rem;
-                color: #4b5563;
-                margin-bottom: 15px;
-            }
+        .boton {
+            display: inline-block;
+            background: #2563eb;
+            color: #fff;
+            padding: 10px 18px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            text-decoration: none;
+            margin-right: 8px;
+            transition: background 0.2s ease;
+        }
 
-            .price {
-                font-size: 1.4rem;
-                font-weight: bold;
-                color: #2563eb;
-                margin-bottom: 15px;
-            }
+        .boton:hover {
+            background: #1d4ed8;
+        }
 
-            .btn {
-                display: inline-block;
-                background: #2563eb;
-                color: #fff;
-                padding: 10px 20px;
-                border-radius: 10px;
-                font-size: 0.95rem;
-                text-decoration: none;
-                transition: background 0.2s ease;
-            }
+        .activo {
+            background-color: #111827;
+            color: #fff !important;
+        }
 
-            .btn:hover {
-                background: #1d4ed8;
-            }
-        </style>
-    </head>
+        .text-center .btn {
+            border-radius: 999px;
+        }
+    </style>
+    <div class="page-wrapper">
+        <div class="contenedor">
+            <h1 class="display-4 fw-bold text-center mb-4">Productos Disponibles</h1>
 
-    <body>
+            {{-- Filtros de categoría --}}
+            <div class="text-center mb-4">
+                {{-- Botón TODOS --}}
+                <a href="{{ route('products.index') }}"
+                    class="btn btn-secondary m-3 {{ !$selectedCategory ? 'activo' : '' }}">
+                    Todos
+                </a>
 
-        <header>
-            <h1>Productos Tecnológicos</h1>
-            <p>Explora nuestra selección de tecnología de última generación</p>
-        </header>
-
-        <main class="container">
-
-            <!-- Producto -->
-            <div class="card">
-                <img src="https://www.asus.com/media/Odin/Websites/global/ProductLine/20200824120814.jpg" alt="Laptop Gamer">
-                <div class="badges">
-                    <span class="badge">Marca: ASUS</span>
-                    <span class="badge">Categoría: Laptop</span>
-                </div>
-                <h2 class="nombre">Laptop Gamer</h2>
-                <p class="descripcion">Potente laptop con procesador Intel i7, 16GB RAM y tarjeta gráfica RTX 3060.</p>
-                <div class="price">$4.500.000</div>
-                <a href="#" class="btn">Comprar</a>
+                {{-- Botones por categoría --}}
+                @foreach ($categories as $category)
+                    <a href="{{ route('products.index', ['category' => $category->id]) }}"
+                        class="btn btn-secondary m-3 {{ $selectedCategory == $category->id ? 'activo' : '' }}">
+                        {{ $category->name }}
+                    </a>
+                @endforeach
             </div>
 
-            <!-- Producto -->
-            <div class="card">
-                <img src="https://media.falabella.com/falabellaCO/130280408_01/w=800,h=800,fit=pad"
-                    alt="Auriculares Bluetooth">
-                <div class="badges">
-                    <span class="badge">Marca: Sony</span>
-                    <span class="badge">Categoría: Audio</span>
-                </div>
-                <h2 class="nombre">Auriculares Bluetooth</h2>
-                <p class="descripcion">Auriculares inalámbricos con cancelación de ruido y hasta 30 horas de batería.</p>
-                <div class="price">$450.000</div>
-                <a href="#" class="btn">Comprar</a>
+            <div class="grid-productos mb-4">
+                @foreach ($products as $product)
+                    <div class="tarjeta">
+                        {{-- Imagen — usa un placeholder temporal si no tienes imagen --}}
+                        <img src="https://http2.mlstatic.com/D_NQ_NP_877891-MLA88103811437_072025-O.webp"
+                            alt="{{ $product->name }}">
+
+                        <div class="contenido">
+                            <h2>{{ $product->name }}</h2>
+
+                            {{-- Nombre de la categoría --}}
+                            <p>Categoría: {{ $product->category->name ?? 'Sin categoría' }}</p>
+
+                            {{-- Nombre de la marca --}}
+                            <p>Marca: {{ $product->brand->name ?? 'Sin marca' }}</p>
+
+                            <p>{{ $product->description }}</p>
+
+                            <p class="precio">$ {{ number_format($product->price) }}</p>
+                        </div>
+
+                        <a href="#" class="boton">Ver producto</a>
+                        <a href="#" class="boton">Agregar al carrito</a>
+                    </div>
+                @endforeach
             </div>
 
-            <!-- Producto -->
-            <div class="card">
-                <img src="https://www.losdistribuidores.com/wp-content/uploads/2024/02/samsung-galaxy-s24-ultra-negro.webp"
-                    alt="Smartphone 5G">
-                <div class="badges">
-                    <span class="badge">Marca: Samsung</span>
-                    <span class="badge">Categoría: Smartphone</span>
-                </div>
-                <h2 class="nombre">Smartphone 5G</h2>
-                <p class="descripcion">Pantalla AMOLED de 6.7", 8GB RAM y 128GB almacenamiento, listo para 5G.</p>
-                <div class="price">$3.200.000</div>
-                <a href="#" class="btn">Comprar</a>
-            </div>
+            {{ $products->links() }}
+        </div>
+    </div>
 
-            <!-- Producto -->
-            <div class="card">
-                <img src="https://garminb2cco.vtexassets.com/assets/vtex.file-manager-graphql/images/0cd81c9f-7f54-42dd-b4f3-cd4422c03002___76566aeca24aa7cb160ba1c0ab7710a8.png"
-                    alt="Smartwatch Deportivo">
-                <div class="badges">
-                    <span class="badge">Marca: Garmin</span>
-                    <span class="badge">Categoría: Wearable</span>
-                </div>
-                <h2 class="nombre">Smartwatch Deportivo</h2>
-                <p class="descripcion">Reloj inteligente con GPS, monitor de ritmo cardiaco y resistencia al agua.</p>
-                <div class="price">$950.000</div>
-                <a href="#" class="btn">Comprar</a>
-            </div>
-
-        </main>
-
-    </body>
-
-    </html>
+    @include('layouts.footer')
 @endsection
