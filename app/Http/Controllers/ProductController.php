@@ -56,4 +56,11 @@ class ProductController extends Controller
         $product->save();
         return "PRODUCT SAVED!!!!";
     }
+
+    public function table(){
+        $products = Product::orderBy('id', 'desc')->paginate(10);
+        return view('products.table',[
+            'products'=>$products
+        ]);
+    }
 }
