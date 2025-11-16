@@ -9,7 +9,7 @@
                         <h6 class="mb-0">Agregar nuevo producto</h6>
                     </div>
                     <div class="card-body">
-                        <form action="#" method="POST">
+                        <form action="{{ route('admin.products.store') }}" method="POST">
                             @csrf
                             <div class="mb-3">
                                 <label for="productName" class="form-label">Nombre del producto</label>
@@ -49,8 +49,7 @@
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label for="productImage" class="form-label">URL de la imagen</label>
-                                    <input type="url" class="form-control" id="productImage" name="productImage"
-                                        placeholder="https://">
+                                    <input type="text" class="form-control" id="productImage">
                                 </div>
                             </div>
                             <div class="text-end">
