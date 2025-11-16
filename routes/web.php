@@ -4,6 +4,7 @@ use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
 
 Route::get('/', [ProductController::class, 'index']);
@@ -20,6 +21,11 @@ Route::prefix('admin')->group(function () {
     Route::get('/categories/create', [CategoryController::class, 'create'])->name('admin.categories.create');
     Route::post('/categories/store', [CategoryController::class, 'store'])->name('admin.categories.store');
     Route::delete('/categories/{category}', [CategoryController::class, 'delete'])->name('admin.categories.delete');
+
+    Route::get('/brands', [BrandController::class, 'table'])->name('admin.brands.table');
+    Route::get('/brands/create', [BrandController::class, 'create'])->name('admin.brands.create');
+    Route::post('/brands/store', [BrandController::class, 'store'])->name('admin.brands.store');
+    Route::delete('/brands/{brand}', [BrandController::class, 'delete'])->name('admin.brands.delete');
 
     Route::get('products/create', [ProductController::class, 'create'])->name('admin.products.create');
     Route::get('products', [ProductController::class, 'table'])->name('admin.products.table');
