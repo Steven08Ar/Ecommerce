@@ -10,15 +10,26 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class CategoryFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
+
+    protected $model = Category::class;
+
     public function definition(): array
     {
+        $category = [
+            'Phones',
+            'Computers',
+            'TVs',
+            'Appliances',
+            'Cameras',
+            'Audio',
+            'Wearables',
+            'Gaming',
+            'Networking',
+            'Accesories'
+        ];
+
         return [
-            'name' => fake()->word(),
+            'name' => $this->faker->randomElement($category),
         ];
     }
 }

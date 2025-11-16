@@ -10,13 +10,12 @@ use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
+
     public function run(): void
     {
         $this->call([
             CategorySeeder::class,
+            BrandSeeder::class
         ]);
 
         ProductFactory::new()->count(1000)->create();
