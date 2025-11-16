@@ -33,9 +33,8 @@
                                     @error('price')
                                         <small class="text-danger">{{ $message }}</small>
                                     @enderror
-                                    <input type="number" class="form-control" id="productPrice" name="price"
-                                        placeholder="Ej: 3499000" min="0" step="1000" value="{{ old('price') }}"
-                                        required>
+                                    <input type="text" class="form-control" id="productPrice" name="price"
+                                        placeholder="Ej: 3499000" value="{{ old('price') }}" required>
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label for="productCategory" class="form-label">Categoría</label>
@@ -68,10 +67,6 @@
                                             </option>
                                         @endforeach
                                     </select>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="productImage" class="form-label">URL de la imagen</label>
-                                    <input type="text" class="form-control" id="productImage">
                                 </div>
                             </div>
                             <div class="text-end">
